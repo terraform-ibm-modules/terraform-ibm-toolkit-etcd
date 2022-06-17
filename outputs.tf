@@ -53,6 +53,16 @@ output "https_connection_url" {
 }
 
 output "https_certificate_base64" {
-  description = ""
+  description = "The CA certificate for the https connection"
   value       = data.ibm_database_connection.database_connection.https[0].certificate[0].certificate_base64
+}
+
+output "grpc_connection_url" {
+  description = "The grpc url for the connection to the etcd database"
+  value       = data.ibm_database_connection.database_connection.grpc[0].composed[0]
+}
+
+output "grpc_certificate_base64" {
+  description = "The CA certificate for the grpc connection"
+  value       = data.ibm_database_connection.database_connection.grpc[0].certificate[0].certificate_base64
 }
