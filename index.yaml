@@ -1,0 +1,9 @@
+name: ibm-etcd
+type: terraform
+description: Module to provision etcd on ibm
+tags:
+  - tools
+  - devops
+versions: []
+cloudProvider: ibm
+id: github.com/cloud-native-toolkit/terraform-ibm-etcd
