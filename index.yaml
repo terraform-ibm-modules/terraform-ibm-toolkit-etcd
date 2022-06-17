@@ -2,8 +2,127 @@ name: ibm-etcd
 type: terraform
 description: Module to provision etcd on ibm
 tags:
-  - tools
-  - devops
-versions: []
+  - etcd
+  - ibmcloud
+versions:
+  - platforms: []
+    providers:
+      - name: ibm
+        source: ibm-cloud/ibm
+    dependencies:
+      - id: resource_group
+        refs:
+          - source: github.com/cloud-native-toolkit/terraform-ibm-resource-group
+            version: '>= 2.1.0'
+    variables:
+      - name: resource_group_name
+        type: string
+        description: The name of the resource group for the etc database
+        moduleRef:
+          id: resource_group
+          output: name
+      - name: region
+        type: string
+        description: The region where the etcd database will be provisioned
+        scope: global
+      - name: name_prefix
+        type: string
+        description: >-
+          The prefix name for the service. If not provided it will default to
+          the resource group name
+        default: ''
+        scope: global
+      - name: plan
+        type: string
+        description: The type of plan the service instance should run under (standard)
+        default: standard
+      - name: provision
+        type: bool
+        description: Flag indicating that cos instance should be provisioned
+        default: true
+      - name: name
+        type: string
+        description: >-
+          The name that should be used for the service, particularly when
+          connecting to an existing service. If not provided then the name will
+          be defaulted to {name prefix}-{service}
+        default: ''
+      - name: label
+        type: string
+        description: >-
+          The name that should be used for the service, particularly when
+          connecting to an existing service. If not provided then the name will
+          be defaulted to {name prefix}-{service}
+        default: etcd
+      - name: key_protect_instance
+        type: string
+        description: The id of the key protect instance
+        default: 'null'
+      - name: key_protect_key
+        type: string
+        description: The id of the key that will be used to encrypt the database
+        default: 'null'
+      - name: backup_key_protect_key
+        type: string
+        description: The id of the key that will be used to encrypt the database backup
+        default: 'null'
+      - name: tags
+        type: list(string)
+        description: The tags that should be added to the resource
+        default: []
+      - name: disable_public_endpoints
+        type: bool
+        description: Flag indicating that public endpoints should be disabled
+        default: false
+      - name: database_version
+        type: string
+        description: The version of the database to provision
+        default: '3.4'
+      - name: memory_allocation
+        type: number
+        description: Memory allocation in MB for the cluster
+        default: '30720'
+      - name: disk_allocation
+        type: number
+        description: Disk allocation in MB for the cluster
+        default: '768000'
+      - name: cpu_allocation
+        type: number
+        description: Number of CPUs to allocate for the cluster
+        default: '9'
+      - name: backup_etcd_crn
+        type: string
+        description: The crn of the etcd database that will be used for backups
+        default: 'null'
+      - name: remote_leader_etcd_crn
+        type: string
+        description: The crn of the etcd database that will be used for the remote leader
+        default: 'null'
+    version: v1.0.0
+    outputs:
+      - name: id
+        description: The Object Storage instance id
+      - name: name
+        description: The Object Storage instance name
+      - name: crn
+        description: The crn of the Object Storage instance
+      - name: location
+        description: The Object Storage instance location
+      - name: service
+        description: The name of the key provisioned for the Object Storage instance
+      - name: label
+        description: The label used for the Object Storage instance
+      - name: type
+        description: The type of the resource
+      - name: username
+        description: The username for the database user
+      - name: password
+        description: The password for the database user
+      - name: https_connection_url
+        description: The https url for the connection to the etcd database
+      - name: https_certificate_base64
+        description: ''
 cloudProvider: ibm
 id: github.com/cloud-native-toolkit/terraform-ibm-etcd
+interfaces:
+  - github.com/cloud-native-toolkit/automation-modules#ibm-service
