@@ -1,11 +1,18 @@
 terraform {
+  required_version = ">= 0.15"
+
+  required_providers {
+    ibm = {
+      source = "ibm-cloud/ibm"
+    }
+  }
 }
 
 module setup_clis {
   source = "github.com/cloud-native-toolkit/terraform-util-clis.git"
 
   bin_dir = "${path.cwd}/test_bin_dir"
-  clis = ["ibmcloud"]
+  clis = ["jq", "ibmcloud"]
 }
 
 resource local_file bin_dir {

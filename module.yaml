@@ -1,11 +1,28 @@
 name: ibm-etcd
 type: terraform
 description: Module to provision etcd on ibm
+interfaces:
+  - github.com/cloud-native-toolkit/automation-modules#ibm-service
+cloudProvider: ibm
 tags:
-  - tools
-  - devops
+  - etcd
+  - ibmcloud
 versions:
   - platforms: []
-    dependencies: []
-    variables: []
-cloudProvider: ibm
+    providers:
+      - name: ibm
+        source: "ibm-cloud/ibm"
+    dependencies:
+      - id: resource_group
+        refs:
+          - source: github.com/cloud-native-toolkit/terraform-ibm-resource-group
+            version: ">= 2.1.0"
+    variables:
+      - name: resource_group_name
+        moduleRef:
+          id: resource_group
+          output: name
+      - name: name_prefix
+        scope: global
+      - name: region
+        scope: global
